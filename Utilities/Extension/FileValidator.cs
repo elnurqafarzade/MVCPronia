@@ -1,6 +1,7 @@
 ﻿using MVCPronia.Utilities.Enums;
+using MVCPronia.Models;
 
-namespace MVCPronia.Utilities.Extension
+namespace ProniaMVC.Utilities.Extension
 {
     public static class FileValidator
     {
@@ -36,6 +37,20 @@ namespace MVCPronia.Utilities.Extension
 
             return fileName;
         }
-    }  
-}
+        public static void DeleteFile(this string fileName, params string[] roots)
+        {
+            string path = string.Empty;
+            for (int i = 0; i < roots.Length; i++)
+            {
+                path = Path.Combine(path, roots[i]);
+            }
 
+            path = Path.Combine(path, fileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+        }
+    }
+}
