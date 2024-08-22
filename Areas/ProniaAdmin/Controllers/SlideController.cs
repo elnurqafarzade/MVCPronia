@@ -4,7 +4,6 @@ using MVCPronia.Areas.ProniaAdmin.ViewModels;
 using MVCPronia.DAL;
 using MVCPronia.Models;
 using MVCPronia.Utilities.Enums;
-using MVCPronia.Utilities.Extension;
 using ProniaMVC.Utilities.Extension;
 
 namespace MVCPronia.Areas.ProniaAdmin.Controllers

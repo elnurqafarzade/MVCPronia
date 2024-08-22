@@ -3,53 +3,43 @@ using Microsoft.EntityFrameworkCore;
 using MVCPronia.DAL;
 using MVCPronia.Models;
 using MVCPronia.ViewModels;
-using System;
 
-namespace MVCPronia.Controllers
+public class ProductController : Controller
 {
-	public class ProductController : Controller
-	{
-		private readonly AppDbContext _context;
-		public ProductController(AppDbContext context)
-		{
-			_context = context;
-		}
+    private readonly AppDbContext _context;
 
-		[HttpGet("{id}")]
-		public async Task<IActionResult> Detail(int? id)
-		{
-			if (id == null || id <= 0)
-			{
-				return BadRequest();
-			}
-			Product? product = await _context.Products
-			.Include(p => p.Category)
-			.Include(p => p.ProductImages.OrderByDescending(x => x.IsPrimary))
-			.FirstOrDefaultAsync(p => p.Id == id);
+    public ProductController(AppDbContext context)
+    {
+        _context = context;
+    }
 
-			if (product is null)
-			{
-				return NotFound();
-			}
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    public async Task<IActionResult> Detail(int? id)
+    {
+        if (id == null || id <= 0) return BadRequest();
 
 
-			DetailVM detailVM = new DetailVM
-			{
-				Product = product,
-				Products = await _context.Products.Where(p => p.CategoryId == product.CategoryId && p.Id != id)
-				.Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null))
-				.ToListAsync(),
+        Product? product = await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductImages.OrderByDescending(pi => pi.IsPrimary))
+            .Include(p => p.ProductTags).ThenInclude(pt => pt.Tag)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
+        if (product == null) return NotFound();
 
-			};
+        DetailVM detailVM = new DetailVM()
+        {
+            Product = product,
+            Products = await _context.Products.Where(p => p.CategoryId == product.CategoryId && p.Id != id)
+            .Include(p => p.ProductImages.Where(pi => pi.IsPrimary != null))
+            .Take(8)
+            .ToListAsync()
+        };
 
-			return View(detailVM);
-		}
-
-		[HttpGet]
-		public IActionResult Index()
-		{
-			return View();
-		}
-	}
+        return View(detailVM);
+    }
 }
