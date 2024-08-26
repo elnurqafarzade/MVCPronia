@@ -3,16 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using MVCPronia.DAL;
 using MVCPronia.Models;
 using MVCPronia.ViewModels;
+using System;
 
 public class ProductController : Controller
 {
     private readonly AppDbContext _context;
-
     public ProductController(AppDbContext context)
     {
         _context = context;
     }
-
     public IActionResult Index()
     {
         return View();
@@ -20,18 +19,27 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Detail(int? id)
     {
-        if (id == null || id <= 0) return BadRequest();
+        if (id == null || id <= 0)
+        {
+            return BadRequest();
+        }
 
-
-        Product? product = await _context.Products
-            .Include(p => p.Category)
+        Product? product = await _context.Products.Include(p => p.Category)
             .Include(p => p.ProductImages.OrderByDescending(pi => pi.IsPrimary))
-            .Include(p => p.ProductTags).ThenInclude(pt => pt.Tag)
+            .Include(p => p.ProductTags)
+            .ThenInclude(pt => pt.Tag)
+            .Include(p => p.ProductColors)
+            .ThenInclude(pc => pc.Color)
+            .Include(p => p.ProductSizes)
+            .ThenInclude(ps => ps.Size)
             .FirstOrDefaultAsync(p => p.Id == id);
 
-        if (product == null) return NotFound();
+        if (product == null)
+        {
+            return NotFound();
+        }
 
-        DetailVM detailVM = new DetailVM()
+        DetailVM detailVM = new DetailVM
         {
             Product = product,
             Products = await _context.Products.Where(p => p.CategoryId == product.CategoryId && p.Id != id)
@@ -41,5 +49,6 @@ public class ProductController : Controller
         };
 
         return View(detailVM);
+
     }
 }

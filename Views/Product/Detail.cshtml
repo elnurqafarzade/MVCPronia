@@ -1,6 +1,7 @@
-﻿@model DetailVM
+﻿@using MVCPronia.ViewModels
+@model DetailVM
 
-
+<!-- Begin Main Content Area  -->
 <main class="main-content">
     <div class="breadcrumb-area breadcrumb-height"
          data-bg-image="~/assets/images/breadcrumb/bg/1-1-1919x388.jpg">
@@ -20,39 +21,39 @@
             </div>
         </div>
     </div>
-    <div class="single-product-area section-space-top-100">
+    <div class="single-Product-area section-space-top-100">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="single-product-img">
-                        <div class="swiper-container single-product-slider">
+                    <div class="single-Product-img">
+                        <div class="swiper-container single-Product-slider">
                             <div class="swiper-wrapper">
-                                @foreach (ProductImage productImage in Model.Product.ProductImages)
+                             @foreach (ProductImage image in Model.Product.ProductImages)
                                 {
                                     <div class="swiper-slide">
-                                        <a href="~/assets/images/website-images/@productImage.ImageURL"
+                                        <a href="~/assets/images/website-images/@image.ImageURL"
                                            class="single-img gallery-popup">
                                             <img class="img-full"
-                                                 src="~/assets/images/website-images/@productImage.ImageURL"
+                                                 src="~/assets/images/website-images/@image.ImageURL"
                                                  alt="Product Image" />
                                         </a>
                                     </div>
                                 }
 
-
                             </div>
                         </div>
                         <div class="thumbs-arrow-holder">
-                            <div class="swiper-container single-product-thumbs">
+                            <div class="swiper-container single-Product-thumbs">
                                 <div class="swiper-wrapper">
-                                    @foreach (ProductImage productImage in Model.Product.ProductImages)
+                                    @foreach (ProductImage image in Model.Product.ProductImages)
                                     {
                                         <a href="#" class="swiper-slide">
                                             <img class="img-full"
-                                                 src="~/assets/images/website-images/@productImage.ImageURL"
+                                                 src="~/assets/images/website-images/@image.ImageURL"
                                                  alt="Product Thumnail" />
                                         </a>
                                     }
+
                                 </div>
                                 <!-- Add Arrows -->
                                 <div class="thumbs-button-wrap d-none d-md-block">
@@ -68,10 +69,10 @@
                     </div>
                 </div>
                 <div class="col-lg-6 pt-5 pt-lg-0">
-                    <div class="single-product-content">
+                    <div class="single-Product-content">
                         <h2 class="title">@Model.Product.Name</h2>
                         <div class="price-box">
-                            <span class="new-price">@Model.Product.Price</span>
+                            <span class="new-price">$@Model.Product.Price</span>
                         </div>
                         <div class="rating-box-wrap">
                             <div class="rating-box">
@@ -90,22 +91,23 @@
                         <div class="selector-wrap color-option">
                             <span class="selector-title border-bottom-0">Color</span>
                             <select class="nice-select wide border-bottom-0 rounded-0">
-                                <option value="default">Black & White</option>
-                                <option value="blue">Blue</option>
-                                <option value="green">Green</option>
-                                <option value="red">Red</option>
+                                @foreach (ProductColor pColor in Model.Product.ProductColors)
+                                {
+                                    <option value="@pColor.Id">@pColor.Color.Name</option>
+                                }
                             </select>
                         </div>
                         <div class="selector-wrap size-option">
                             <span class="selector-title">Size</span>
                             <select class="nice-select wide rounded-0">
-                                <option value="medium">Medium Size & Poot</option>
-                                <option value="large">Large Size With Poot</option>
-                                <option value="small">Small Size With Poot</option>
+                                @foreach (ProductSize pSize in Model.Product.ProductSizes)
+                                {
+                                    <option value="@pSize.Id">@pSize.Size.Name</option> 
+                                }
                             </select>
                         </div>
                         <p class="short-desc">
-                            @Model.Product.Description.Substring(0, @Model.Product.Description.Length)
+                         @(Model.Product.Description.Length>=100? Model.Product.Description.Substring(0,100):Model.Product.Description)
                         </p>
                         <ul class="quantity-with-btn">
                             <li class="quantity">
@@ -168,7 +170,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="product-category">
+                        <div class="Product-category">
                             <span class="title">SKU:</span>
                             <ul>
                                 <li>
@@ -176,26 +178,26 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="product-category">
-                            <span class="title">Categories :</span>
+                        <div class="Product-category">
+                            <span class="title">Category :</span>
                             <ul>
                                 <li>
                                     <a href="#">@Model.Product.Category.Name</a>
                                 </li>
                             </ul>
                         </div>
-                        <div class="product-category product-tags">
+                        <div class="Product-category Product-tags">
                             <span class="title">Tags :</span>
                             <ul>
                                 <li>
-                                    @foreach (ProductTag ptag in Model.Product.ProductTags)
-                                    {
+                                   @foreach (ProductTag ptag in Model.Product.ProductTags)
+                                   {
                                         <a href="#">@ptag.Tag.Name</a>
-                                    }
+                                   }
                                 </li>
                             </ul>
                         </div>
-                        <div class="product-category social-link align-items-center pb-0">
+                        <div class="Product-category social-link align-items-center pb-0">
                             <span class="title pe-3">Share:</span>
                             <ul>
                                 <li>
@@ -249,11 +251,11 @@
             </div>
         </div>
     </div>
-    <div class="product-tab-area section-space-top-100">
+    <div class="Product-tab-area section-space-top-100">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <ul class="nav product-tab-nav tab-style-2 pt-0" role="tablist">
+                    <ul class="nav Product-tab-nav tab-style-2 pt-0" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="tab-btn"
                                id="information-tab"
@@ -288,16 +290,16 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="tab-content product-tab-content">
+                    <div class="tab-content Product-tab-content">
                         <div class="tab-pane fade"
                              id="information"
                              role="tabpanel"
                              aria-labelledby="information-tab">
-                            <div class="product-information-body">
+                            <div class="Product-information-body">
                                 <h4 class="title">Shipping</h4>
                                 <p class="short-desc mb-4">
                                     The item will be shipped from China. So it need 15-20
-                                    days to deliver. Our product is good with reasonable
+                                    days to deliver. Our Product is good with reasonable
                                     price and we believe you will worth it. So please wait
                                     for it patiently! Thanks.Any question please kindly to
                                     contact us and we promise to work hard to help you to
@@ -313,7 +315,7 @@
                                 <p class="short-desc mb-0">
                                     If it is the quality question, we will resend or refund
                                     to you; If you receive damaged or wrong items, please
-                                    contact us and attach some pictures about product, we
+                                    contact us and attach some pictures about Product, we
                                     will exchange a new correct item to you after the
                                     confirmation.
                                 </p>
@@ -323,7 +325,7 @@
                              id="description"
                              role="tabpanel"
                              aria-labelledby="description-tab">
-                            <div class="product-description-body">
+                            <div class="Product-description-body">
                                 <p class="short-desc mb-0">
                                     @Model.Product.Description
                                 </p>
@@ -333,7 +335,7 @@
                              id="reviews"
                              role="tabpanel"
                              aria-labelledby="reviews-tab">
-                            <div class="product-review-body">
+                            <div class="Product-review-body">
                                 <div class="blog-comment mt-0">
                                     <h4 class="heading">Comments (03)</h4>
                                     <div class="blog-comment-item">
@@ -445,7 +447,7 @@
     </div>
 
     <!-- Begin Product Area -->
-    <div class="product-area section-space-y-axis-90">
+    <div class="Product-area section-space-y-axis-90">
         <div class="container">
             <div class="row">
                 <div class="section-title-wrap without-tab">
@@ -455,84 +457,10 @@
                         text. It has roots in a piece of classical Latin literature
                     </p>
                 </div>
-                <div class="col-lg-12">
-                    <div class="swiper-container product-slider">
-                        <div class="swiper-wrapper">
-                            @foreach (Product product in Model.Products)
-                            {
-                                <div class="swiper-slide product-item">
-                                    <div class="product-img">
-                                        <a href="/product/detail/@product.Id">
-                                            <img class="primary-img"
-                                                 src="~/assets/images/website-images/@product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == true)?.ImageURL"
-                                                 alt="Product Images" />
-                                            <img class="secondary-img"
-                                                 src="~/assets/images/website-images/@product.ProductImages.FirstOrDefault(pi => pi.IsPrimary == false)?.ImageURL"
-                                                 alt="Product Images" />
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html"
-                                                       data-tippy="Add to wishlist"
-                                                       data-tippy-inertia="true"
-                                                       data-tippy-animation="shift-away"
-                                                       data-tippy-delay="50"
-                                                       data-tippy-arrow="true"
-                                                       data-tippy-theme="sharpborder">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#quickModal">
-                                                    <a href="#"
-                                                       data-tippy="Quickview"
-                                                       data-tippy-inertia="true"
-                                                       data-tippy-animation="shift-away"
-                                                       data-tippy-delay="50"
-                                                       data-tippy-arrow="true"
-                                                       data-tippy-theme="sharpborder">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html"
-                                                       data-tippy="Add to cart"
-                                                       data-tippy-inertia="true"
-                                                       data-tippy-animation="shift-away"
-                                                       data-tippy-delay="50"
-                                                       data-tippy-arrow="true"
-                                                       data-tippy-theme="sharpborder">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name"
-                                           href="single-product-variable.html">@product.Name</a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$@product.Price</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
+            @await Html.PartialAsync("ProductpartialView", Model.Products)
             </div>
         </div>
     </div>
     <!-- Product Area End Here -->
 </main>
+<!-- Main Content Area End Here  -->

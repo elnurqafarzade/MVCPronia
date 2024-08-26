@@ -4,7 +4,7 @@ using MVCPronia.Areas.ProniaAdmin.ViewModels;
 using MVCPronia.DAL;
 using MVCPronia.Models;
 using MVCPronia.Utilities.Enums;
-using ProniaMVC.Utilities.Extension;
+using MVCPronia.Utilities.Extension;
 
 namespace MVCPronia.Areas.ProniaAdmin.Controllers
 {
@@ -103,7 +103,7 @@ namespace MVCPronia.Areas.ProniaAdmin.Controllers
                 Title = slide.Title,
                 SubTitle = slide.SubTitle,
                 Description = slide.Description,
-                Image = slide.ImageURL,
+                ImageURL = slide.ImageURL,
                 Order = slide.Order
             };
 

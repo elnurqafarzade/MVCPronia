@@ -1,7 +1,7 @@
 ﻿using MVCPronia.Utilities.Enums;
 using MVCPronia.Models;
 
-namespace ProniaMVC.Utilities.Extension
+namespace MVCPronia.Utilities.Extension
 {
     public static class FileValidator
     {

@@ -16,7 +16,7 @@ namespace MVCPronia.Controllers
             _context = context;
         }
         public async Task<IActionResult> Index()
-        {
+        { 
             var sli = await _context.Slides.OrderBy(s => s.Order).Take(2).ToListAsync();
             var pro = await _context.Products
                 .OrderByDescending(p => p.CreatedAt)
